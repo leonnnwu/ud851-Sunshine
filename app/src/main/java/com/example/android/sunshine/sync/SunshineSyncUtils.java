@@ -23,11 +23,15 @@ import android.support.annotation.NonNull;
 
 import com.example.android.sunshine.data.WeatherContract;
 
-// COMPLETED (9) Create a class called SunshineSyncUtils
 public class SunshineSyncUtils {
 
-//  COMPLETED (10) Declare a private static boolean field called sInitialized
+//  TODO () Add constant values to sync Sunshine every 3 - 4 hours
+
     private static boolean sInitialized;
+
+//  TODO () Add a sync tag to identify our sync job
+
+//  TODO () Create a method to schedule our periodic weather sync
 
     /**
      * Creates periodic sync tasks and checks to see if an immediate sync is required. If an
@@ -36,20 +40,18 @@ public class SunshineSyncUtils {
      * @param context Context that will be passed to other methods and used to access the
      *                ContentResolver
      */
-    //  COMPLETED (11) Create a synchronized public static void method called initialize
     synchronized public static void initialize(@NonNull final Context context) {
 
-//      COMPLETED (12) Only execute this method body if sInitialized is false
         /*
          * Only perform initialization once per app lifetime. If initialization has already been
          * performed, we have nothing to do in this method.
          */
         if (sInitialized) return;
 
-//      COMPLETED (13) If the method body is executed, set sInitialized to true
         sInitialized = true;
 
-//      COMPLETED (14) Check to see if our weather ContentProvider is empty
+//      TODO () Call the method you created to schedule a periodic weather sync
+
         /*
          * We need to check to see if our ContentProvider has data to display in our forecast
          * list. However, performing a query on the main thread is a bad idea as this may
@@ -94,7 +96,6 @@ public class SunshineSyncUtils {
                  * If the Cursor was null OR if it was empty, we need to sync immediately to
                  * be able to display data to the user.
                  */
-//              COMPLETED (15) If it is empty or we have a null Cursor, sync the weather now!
                 if (null == cursor || cursor.getCount() == 0) {
                     startImmediateSync(context);
                 }
@@ -108,7 +109,6 @@ public class SunshineSyncUtils {
         checkForEmpty.start();
     }
 
-    //  COMPLETED (16) Create a public static void method called startImmediateSync
     /**
      * Helper method to perform a sync immediately using an IntentService for asynchronous
      * execution.
@@ -116,7 +116,6 @@ public class SunshineSyncUtils {
      * @param context The Context used to start the IntentService for the sync.
      */
     public static void startImmediateSync(@NonNull final Context context) {
-//      COMPLETED (17) Within that method, start the SunshineSyncIntentService
         Intent intentToSyncImmediately = new Intent(context, SunshineSyncIntentService.class);
         context.startService(intentToSyncImmediately);
     }

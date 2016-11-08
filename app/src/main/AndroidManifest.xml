@@ -58,11 +58,13 @@
             android:authorities="@string/content_authority"
             android:exported="false"/>
 
-        <!-- COMPLETED (8) Register SunshineSyncIntentService in the manifest -->
         <!--This is required for immediate syncs -->
         <service
             android:name=".sync.SunshineSyncIntentService"
             android:exported="false" />
+
+        <!-- TODO () Declare SunshineFirebaseJobService as a service in the manifest -->
+            <!-- TODO () Declare an intent filter with the action ACTION_EXECUTE -->
 
     </application>
 </manifest>

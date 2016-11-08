@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.sunshine.sync;
+// TODO () Make sure you've imported the jobdispatcher.JobService, not job.JobService
 
-import android.app.IntentService;
-import android.content.Intent;
+// TODO () Add a class called SunshineFirebaseJobService that extends jobdispatcher.JobService
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- */
-public class SunshineSyncIntentService extends IntentService {
-    public SunshineSyncIntentService() {
-        super("SunshineSyncIntentService");
-    }
+//  TODO () Declare a Thread field called mFetchWeatherThread
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        SunshineSyncTask.syncWeather(this);
-    }
-}
+//  TODO () Override onStartJob and within it, spawn off a separate thread to sync weather data
+//              TODO () Once the weather data is sync'd, call jobFinished with the appropriate arguments
+
+//  TODO () Override onStopJob, interrupt the thread and set it to null and return true
