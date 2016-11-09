@@ -43,7 +43,6 @@ public class NotificationUtils {
      * can be handy when we need to cancel the notification, or perhaps update it. This number is
      * arbitrary and can be set to whatever you like. 3004 is in no way significant.
      */
-//  COMPLETED () Create a constant int value to identify the notification
     private static final int WEATHER_NOTIFICATION_ID = 3004;
 
     /**
@@ -102,7 +101,6 @@ public class NotificationUtils {
              * finally the text of the notification, which in our case in a summary of today's
              * forecast.
              */
-//          COMPLETED () Use NotificationCompat.Builder to begin building the notification
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                     .setColor(resources.getColor(R.color.colorPrimary))
                     .setSmallIcon(smallArtResourceId)
@@ -111,7 +109,6 @@ public class NotificationUtils {
                     .setContentText(notificationText)
                     .setAutoCancel(true);
 
-//          COMPLETED () Create an Intent with the proper URI to start the DetailActivity
             /*
              * This Intent will be triggered when the user clicks the notification. In our case,
              * we want to open Sunshine to the DetailActivity to display the newly updated weather.
@@ -119,24 +116,19 @@ public class NotificationUtils {
             Intent detailIntentForToday = new Intent(context, DetailActivity.class);
             detailIntentForToday.setData(todaysWeatherUri);
 
-//          COMPLETED () Use TaskStackBuilder to create the proper PendingINtent
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
             taskStackBuilder.addNextIntentWithParentStack(detailIntentForToday);
             PendingIntent resultPendingIntent = taskStackBuilder
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-//          COMPLETED () Set the content Intent of the NotificationBuilder
             notificationBuilder.setContentIntent(resultPendingIntent);
 
-//          COMPLETED () Get a reference to the NotificationManager
             NotificationManager notificationManager = (NotificationManager)
                     context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-//          COMPLETED () Notify the user with the ID WEATHER_NOTIFICATION_ID
             /* WEATHER_NOTIFICATION_ID allows you to update or cancel the notification later on */
             notificationManager.notify(WEATHER_NOTIFICATION_ID, notificationBuilder.build());
 
-//          COMPLETED () Save the time at which the notification occurred using SunshinePreferences
             /*
              * Since we just showed a notification, save the current time. That way, we can check
              * next time the weather is refreshed if we should show another notification.
