@@ -15,6 +15,17 @@
  */
 package com.example.android.sunshine.data;
 
+<<<<<<< HEAD
+=======
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATE;
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_WEATHER_ID;
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
+>>>>>>> 6549ece... S07.03-Exercise-ConflictResolutionPolicy
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -29,11 +40,14 @@ import org.junit.runner.RunWith;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+<<<<<<< HEAD
 import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATE;
 import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+=======
+>>>>>>> 6549ece... S07.03-Exercise-ConflictResolutionPolicy
 
 /**
  * Used to test the database we use in Sunshine to cache weather data. Within these tests, we
@@ -43,7 +57,7 @@ import static junit.framework.Assert.assertTrue;
  * 1) Creation of the database with proper table(s)
  * 2) Insertion of single record into our weather table
  * 3) When a record is already stored in the weather table with a particular date, a new record
- *  with the same date will overwrite that record.
+ * with the same date will overwrite that record.
  * 4) Verify that NON NULL constraints are working properly on record inserts
  * 5) Verify auto increment is working with the ID
  * 6) Test the onUpgrade functionality of the WeatherDbHelper
@@ -62,6 +76,64 @@ public class TestSunshineDatabase {
     @Before
     public void setUp() {
         deleteTheDatabase();
+    }
+
+    /**
+     * Tests that when an insert is performed where the date already exists in the database, the
+     * older record is replaced by the newer record.
+     */
+    @Test
+    public void testDuplicateDateInsertBehaviorShouldReplace() {
+        /* Use WeatherDbHelper to get access to a writable database */
+        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        /* Obtain weather values from TestUtilities */
+        ContentValues testWeatherValues = TestUtilities.createTestWeatherContentValues();
+
+        /*
+         * Get the original weather ID of the testWeatherValues to ensure we use a different
+         * weather ID for our next insert.
+         */
+        long originalWeatherId = testWeatherValues.getAsLong(COLUMN_WEATHER_ID);
+
+        /* Insert the ContentValues with old weather ID into database */
+        database.insert(
+                WeatherContract.WeatherEntry.TABLE_NAME,
+                null,
+                testWeatherValues);
+
+        /*
+         * We don't really care what this ID is, just that it is different than the original and
+         * that we can use it to verify our "new" weather entry has been made.
+         */
+        long newWeatherId = originalWeatherId + 42;
+
+        testWeatherValues.put(COLUMN_WEATHER_ID, newWeatherId);
+
+        /* Insert the ContentValues with new weather ID into database */
+        database.insert(
+                WeatherContract.WeatherEntry.TABLE_NAME,
+                null,
+                testWeatherValues);
+
+        /* Query for a weather record with our new weather ID */
+        Cursor newWeatherIdCursor = database.query(
+                TABLE_NAME,
+                new String[]{COLUMN_WEATHER_ID},
+                COLUMN_WEATHER_ID + " == " + newWeatherId,
+                null,
+                null,
+                null,
+                null);
+
+        String recordWithNewIdNotFound =
+                "New record did not overwrite the previous record for the same date.";
+        assertTrue(recordWithNewIdNotFound,
+                newWeatherIdCursor.getCount() == 1);
+
+        /* Always close the database */
+        database.close();
     }
 
     /**
