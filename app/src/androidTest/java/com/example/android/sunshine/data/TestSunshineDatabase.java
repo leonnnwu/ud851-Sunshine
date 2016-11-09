@@ -15,6 +15,13 @@
  */
 package com.example.android.sunshine.data;
 
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATE;
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -28,10 +35,6 @@ import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Used to test the database we use in Sunshine to cache weather data. Within these tests, we
@@ -105,60 +108,6 @@ public class TestSunshineDatabase {
                 "IDs were expected to autoincrement but did not.";
         assertTrue(sequentialInsertsDoNotAutoIncrementId,
                 firstRowId + 1 == secondRowId);
-    }
-
-    /**
-     * This method tests the {@link WeatherDbHelper#onUpgrade(SQLiteDatabase, int int)}. The proper
-     * behavior for this method in our case is to simply DROP (or delete) the weather table from
-     * the database and then have the table recreated.
-     */
-    @Test
-    public void testOnUpgradeBehavesCorrectly() {
-
-        testInsertSingleRecordIntoWeatherTable();
-
-        /* Use a WeatherDbHelper to get access to a writable database */
-        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-        dbHelper.onUpgrade(database, 13, 14);
-//        Do I have to get another reference to the database? I don't think so
-//        database = dbHelper.getReadableDatabase();
-
-        /*
-         * This Cursor will contain the names of each table in our database and we will use it to
-         * make sure that our weather table is still in the database after upgrading.
-         */
-        Cursor tableNameCursor = database.rawQuery(
-                "SELECT name FROM sqlite_master WHERE type='table' AND name='" + TABLE_NAME + "'",
-                null);
-
-        /*
-         * Our database should only contain one table, and so the above query should have one
-         * record in the cursor that queried for our table names.
-         */
-        assertTrue(tableNameCursor.getCount() == 1);
-
-        /* We are done verifying our table names, so we can close this cursor */
-        tableNameCursor.close();
-
-        Cursor shouldBeEmptyWeatherCursor = database.query(
-                TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        /* We will finally verify that our weather table is empty after */
-        String weatherTableShouldBeEmpty =
-                "Weather table should be empty after upgrade, but wasn't";
-        assertTrue(weatherTableShouldBeEmpty,
-                shouldBeEmptyWeatherCursor.getCount() == 0);
-
-        /* Test is over, close the cursor */
-        database.close();
     }
 
     /**
