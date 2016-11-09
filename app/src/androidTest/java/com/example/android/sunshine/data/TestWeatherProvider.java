@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 
 import static com.example.android.sunshine.data.TestUtilities.BULK_INSERT_RECORDS_TO_INSERT;
 import static com.example.android.sunshine.data.TestUtilities.createBulkInsertTestWeatherValues;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
