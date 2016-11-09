@@ -15,17 +15,6 @@
  */
 package com.example.android.sunshine.data;
 
-<<<<<<< HEAD
-=======
-import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATE;
-import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_WEATHER_ID;
-import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
->>>>>>> 6549ece... S07.03-Exercise-ConflictResolutionPolicy
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,14 +29,12 @@ import org.junit.runner.RunWith;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
-<<<<<<< HEAD
 import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_DATE;
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.COLUMN_WEATHER_ID;
 import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-=======
->>>>>>> 6549ece... S07.03-Exercise-ConflictResolutionPolicy
 
 /**
  * Used to test the database we use in Sunshine to cache weather data. Within these tests, we
@@ -174,7 +161,6 @@ public class TestSunshineDatabase {
                     null,
                     testValues);
 
-            // TODO, use reflection to get actual string name for constant to show in error
             /* If the insert fails, which it should in this case, database.insert returns -1 */
             String nullRowInsertShouldFail =
                     "Insert should have failed due to a null value for column: '" + columnName + "', but didn't.";
