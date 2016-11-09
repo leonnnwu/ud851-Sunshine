@@ -72,9 +72,16 @@ public class SunshineSyncTask {
                 sunshineContentResolver.bulkInsert(
                         WeatherContract.WeatherEntry.CONTENT_URI,
                         weatherValues);
-            }
+
+//              TODO () Check if notifications are enabled
+
+//              TODO () Check if a day has passed since the last notification
+
+//              TODO () If more than a day have passed and notifications are enabled, notify the user
 
             /* If the code reaches this point, we have successfully performed our sync */
+
+            }
 
         } catch (Exception e) {
             /* Server probably invalid */

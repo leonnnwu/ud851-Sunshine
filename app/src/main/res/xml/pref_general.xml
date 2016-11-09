@@ -32,4 +32,7 @@
         android:key="@string/pref_units_key"
         android:title="@string/pref_units_label" />
 
+    <!-- TODO () Add a checkbox preference for enabling and disabling notifications -->
+    <!-- TODO () Set the default of whether or not to show preferences using bools.xml -->
+
 </PreferenceScreen>

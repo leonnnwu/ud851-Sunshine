@@ -14,14 +14,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<!-- COMPLETED (28) Create a layout called extra_weather_details.xml -->
-<!-- COMPLETED (29) Surround the entire layout with <layout/> tags for data binding -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- COMPLETED (30) Using ConstraintLayout, create the extra weather details layout -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/extra_details"
         android:layout_width="match_parent"

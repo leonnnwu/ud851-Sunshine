@@ -16,4 +16,5 @@
 -->
 <resources>
     <bool name="use_today_layout">false</bool>
+    <!-- TODO () Add a boolean value for showing notifications by default -->
 </resources>
