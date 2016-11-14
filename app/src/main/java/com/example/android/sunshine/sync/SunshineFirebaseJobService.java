@@ -19,17 +19,13 @@ import android.content.Context;
 
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.JobParameters;
-// COMPLETED (2) Make sure you've imported the jobdispatcher.JobService, not job.JobService
 import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.RetryStrategy;
 
-// COMPLETED (3) Add a class called SunshineFirebaseJobService that extends jobdispatcher.JobService
 public class SunshineFirebaseJobService extends JobService {
 
-//  COMPLETED (4) Declare a Thread field called mFetchWeatherThread
     private Thread mFetchWeatherThread;
 
-//  COMPLETED (5) Override onStartJob and within it, spawn off a separate thread to sync weather data
     /**
      * The entry point to your Job. Implementations should offload work to another thread of
      * execution as soon as possible.
@@ -49,7 +45,6 @@ public class SunshineFirebaseJobService extends JobService {
 
                 Context context = getApplicationContext();
                 SunshineSyncTask.syncWeather(context);
-//              COMPLETED (6) Once the weather data is sync'd, call jobFinished with the appropriate arguements
                 jobFinished(jobParameters, false);
             }
         });
@@ -59,7 +54,6 @@ public class SunshineFirebaseJobService extends JobService {
         return true;
     }
 
-//  COMPLETED (7) Override onStopJob, interrupt the thread and set it to null and return true
     /**
      * Called when the scheduling engine has decided to interrupt the execution of a running job,
      * most likely because the runtime constraints associated with the job are no longer satisfied.
