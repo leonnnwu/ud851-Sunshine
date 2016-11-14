@@ -13,13 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// TODO (2) Make sure you've imported the jobdispatcher.JobService, not job.JobService
+package com.example.android.sunshine.sync;
 
-// TODO (3) Add a class called SunshineFirebaseJobService that extends jobdispatcher.JobService
+import android.content.Context;
 
-//  TODO (4) Declare a Thread field called mFetchWeatherThread
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.JobParameters;
+// COMPLETED (2) Make sure you've imported the jobdispatcher.JobService, not job.JobService
+import com.firebase.jobdispatcher.JobService;
+import com.firebase.jobdispatcher.RetryStrategy;
 
-//  TODO (5) Override onStartJob and within it, spawn off a separate thread to sync weather data
-//              TODO (6) Once the weather data is sync'd, call jobFinished with the appropriate arguments
+// COMPLETED (3) Add a class called SunshineFirebaseJobService that extends jobdispatcher.JobService
+public class SunshineFirebaseJobService extends JobService {
 
-//  TODO (7) Override onStopJob, interrupt the thread and set it to null and return true
+//  COMPLETED (4) Declare a Thread field called mFetchWeatherThread
+    private Thread mFetchWeatherThread;
+
+//  COMPLETED (5) Override onStartJob and within it, spawn off a separate thread to sync weather data
+    /**
+     * The entry point to your Job. Implementations should offload work to another thread of
+     * execution as soon as possible.
+     *
+     * This is called by the Job Dispatcher to tell us we should start our job. Keep in mind this
+     * method is run on the application's main thread, so we need to offload work to a background
+     * thread.
+     *
+     * @return whether there is more work remaining.
+     */
+    @Override
+    public boolean onStartJob(final JobParameters jobParameters) {
+
+        mFetchWeatherThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Context context = getApplicationContext();
+                SunshineSyncTask.syncWeather(context);
+//              COMPLETED (6) Once the weather data is sync'd, call jobFinished with the appropriate arguements
+                jobFinished(jobParameters, false);
+            }
+        });
+
+        mFetchWeatherThread.start();
+
+        return true;
+    }
+
+//  COMPLETED (7) Override onStopJob, interrupt the thread and set it to null and return true
+    /**
+     * Called when the scheduling engine has decided to interrupt the execution of a running job,
+     * most likely because the runtime constraints associated with the job are no longer satisfied.
+     *
+     * @return whether the job should be retried
+     * @see Job.Builder#setRetryStrategy(RetryStrategy)
+     * @see RetryStrategy
+     */
+    @Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        if (mFetchWeatherThread != null) {
+            mFetchWeatherThread.interrupt();
+            mFetchWeatherThread = null;
+        }
+
+        return true;
+    }
+}
