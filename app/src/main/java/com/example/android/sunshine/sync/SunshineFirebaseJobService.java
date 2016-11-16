@@ -42,7 +42,6 @@ public class SunshineFirebaseJobService extends JobService {
         mFetchWeatherThread = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 Context context = getApplicationContext();
                 SunshineSyncTask.syncWeather(context);
                 jobFinished(jobParameters, false);
